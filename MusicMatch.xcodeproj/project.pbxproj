@@ -38,7 +38,6 @@
 		C333841710A39E6E003065D8 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C333840F10A39E6E003065D8 /* MainViewController.m */; };
 		C333841E10A39EAA003065D8 /* BumpConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = C333841D10A39EAA003065D8 /* BumpConnector.m */; };
 		C333843E10A39FB4003065D8 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C333843D10A39FB4003065D8 /* MainViewController.xib */; };
-		C333844510A3A020003065D8 /* GameStartOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = C333844410A3A020003065D8 /* GameStartOverlay.xib */; };
 		C3EFBB4F10D3327C004255C0 /* bump4bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C3EFBB4510D3327C004255C0 /* bump4bg.png */; };
 		C3EFBB5310D3327C004255C0 /* bump_to_play_a_friend.png in Resources */ = {isa = PBXBuildFile; fileRef = C3EFBB4910D3327C004255C0 /* bump_to_play_a_friend.png */; };
 		C3EFBB5410D3327C004255C0 /* bump_to_share_app.png in Resources */ = {isa = PBXBuildFile; fileRef = C3EFBB4A10D3327C004255C0 /* bump_to_share_app.png */; };
@@ -96,14 +95,13 @@
 		A3E7010D14ED3A4E007A51DF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BumpApiLocalizable.strings"; sourceTree = "<group>"; };
 		A3E7010E14ED3A4E007A51DF /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/BumpApiLocalizable.strings"; sourceTree = "<group>"; };
 		C1A0C11E11177EF500C3792A /* sound_bump_tap.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound_bump_tap.aif; sourceTree = "<group>"; };
-		C333840C10A39E6E003065D8 /* MusicMatchAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; path = MusicMatchAppDelegate.h; sourceTree = "<group>"; };
+		C333840C10A39E6E003065D8 /* MusicMatchAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicMatchAppDelegate.h; sourceTree = "<group>"; };
 		C333840D10A39E6E003065D8 /* MusicMatchAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicMatchAppDelegate.m; sourceTree = "<group>"; };
-		C333840E10A39E6E003065D8 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = MainViewController.h; sourceTree = "<group>"; };
+		C333840E10A39E6E003065D8 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		C333840F10A39E6E003065D8 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		C333841C10A39EAA003065D8 /* BumpConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BumpConnector.h; sourceTree = "<group>"; };
 		C333841D10A39EAA003065D8 /* BumpConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BumpConnector.m; sourceTree = "<group>"; };
 		C333843D10A39FB4003065D8 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
-		C333844410A3A020003065D8 /* GameStartOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameStartOverlay.xib; sourceTree = "<group>"; };
 		C3EFBB4510D3327C004255C0 /* bump4bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bump4bg.png; sourceTree = "<group>"; };
 		C3EFBB4910D3327C004255C0 /* bump_to_play_a_friend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bump_to_play_a_friend.png; sourceTree = "<group>"; };
 		C3EFBB4A10D3327C004255C0 /* bump_to_share_app.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bump_to_share_app.png; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 				C3EFBB4910D3327C004255C0 /* bump_to_play_a_friend.png */,
 				C3EFBB4A10D3327C004255C0 /* bump_to_share_app.png */,
 				C3EFBB4E10D3327C004255C0 /* entitlements.plist */,
-				C333844410A3A020003065D8 /* GameStartOverlay.xib */,
 				C333843D10A39FB4003065D8 /* MainViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MusicMatch-Info.plist */,
@@ -321,7 +318,6 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				C333843E10A39FB4003065D8 /* MainViewController.xib in Resources */,
-				C333844510A3A020003065D8 /* GameStartOverlay.xib in Resources */,
 				C3EFBB4F10D3327C004255C0 /* bump4bg.png in Resources */,
 				C3EFBB5310D3327C004255C0 /* bump_to_play_a_friend.png in Resources */,
 				C3EFBB5410D3327C004255C0 /* bump_to_share_app.png in Resources */,
