@@ -27,8 +27,8 @@
 		7830A3B310D82C27009B43F7 /* sound_row4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7830A3A910D82C27009B43F7 /* sound_row4.mp3 */; };
 		7830A3B410D82C27009B43F7 /* sound_row5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7830A3AA10D82C27009B43F7 /* sound_row5.mp3 */; };
 		78BF9CCD10D5F91400ED068C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BF9CCB10D5F91400ED068C /* Default.png */; };
-		78BF9CCE10D5F91400ED068C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BF9CCC10D5F91400ED068C /* icon.png */; };
 		A314136714ED518100CE1CEA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A314136614ED518100CE1CEA /* MediaPlayer.framework */; };
+		A337027B14F117AA00F41465 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A337027A14F117AA00F41465 /* icon.png */; };
 		A3E6509914F1146100960EB8 /* music_match.png in Resources */ = {isa = PBXBuildFile; fileRef = A3E6509814F1146100960EB8 /* music_match.png */; };
 		A3E7010F14ED3A4E007A51DF /* BumpAPIAssets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A3E700F614ED3A4E007A51DF /* BumpAPIAssets.bundle */; };
 		A3E7011014ED3A4E007A51DF /* libBumpAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E700F914ED3A4E007A51DF /* libBumpAPI.a */; };
@@ -68,9 +68,9 @@
 		7830A3A910D82C27009B43F7 /* sound_row4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound_row4.mp3; sourceTree = "<group>"; };
 		7830A3AA10D82C27009B43F7 /* sound_row5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound_row5.mp3; sourceTree = "<group>"; };
 		78BF9CCB10D5F91400ED068C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		78BF9CCC10D5F91400ED068C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MusicMatch-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MusicMatch-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A314136614ED518100CE1CEA /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		A337027A14F117AA00F41465 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		A3E6509814F1146100960EB8 /* music_match.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_match.png; sourceTree = "<group>"; };
 		A3E700F514ED3A4E007A51DF /* BumpAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BumpAPI.h; path = ../BumpAPI.h; sourceTree = "<group>"; };
 		A3E700F614ED3A4E007A51DF /* BumpAPIAssets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = BumpAPIAssets.bundle; path = ../BumpAPIAssets.bundle; sourceTree = "<group>"; };
@@ -173,6 +173,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A337027A14F117AA00F41465 /* icon.png */,
 				A3E6509814F1146100960EB8 /* music_match.png */,
 				C1A0C11E11177EF500C3792A /* sound_bump_tap.aif */,
 				7830A3A410D82C27009B43F7 /* sound_quit_game_button.mp3 */,
@@ -186,7 +187,6 @@
 				781B4FC810D702A900BA80FA /* bump4_logo.png */,
 				C3EFBB4510D3327C004255C0 /* bump4bg.png */,
 				78BF9CCB10D5F91400ED068C /* Default.png */,
-				78BF9CCC10D5F91400ED068C /* icon.png */,
 				C3EFBB4910D3327C004255C0 /* bump_to_play_a_friend.png */,
 				C3EFBB4A10D3327C004255C0 /* bump_to_share_app.png */,
 				C3EFBB4E10D3327C004255C0 /* entitlements.plist */,
@@ -326,7 +326,6 @@
 				C3EFBB5410D3327C004255C0 /* bump_to_share_app.png in Resources */,
 				C3EFBB5810D3327C004255C0 /* entitlements.plist in Resources */,
 				78BF9CCD10D5F91400ED068C /* Default.png in Resources */,
-				78BF9CCE10D5F91400ED068C /* icon.png in Resources */,
 				781B4FC910D702A900BA80FA /* bump4_logo.png in Resources */,
 				781B4FDE10D7096700BA80FA /* bump4_bg_top_skinny.png in Resources */,
 				7830A3AE10D82C27009B43F7 /* sound_quit_game_button.mp3 in Resources */,
@@ -341,6 +340,7 @@
 				A3E7011114ED3A4E007A51DF /* BumpApiLocalizable.strings in Resources */,
 				A3E7011214ED3A4E007A51DF /* Localization-ReadMe.txt in Resources */,
 				A3E6509914F1146100960EB8 /* music_match.png in Resources */,
+				A337027B14F117AA00F41465 /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
