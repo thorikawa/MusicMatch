@@ -29,6 +29,7 @@
 		78BF9CCD10D5F91400ED068C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BF9CCB10D5F91400ED068C /* Default.png */; };
 		78BF9CCE10D5F91400ED068C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BF9CCC10D5F91400ED068C /* icon.png */; };
 		A314136714ED518100CE1CEA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A314136614ED518100CE1CEA /* MediaPlayer.framework */; };
+		A3E6509914F1146100960EB8 /* music_match.png in Resources */ = {isa = PBXBuildFile; fileRef = A3E6509814F1146100960EB8 /* music_match.png */; };
 		A3E7010F14ED3A4E007A51DF /* BumpAPIAssets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A3E700F614ED3A4E007A51DF /* BumpAPIAssets.bundle */; };
 		A3E7011014ED3A4E007A51DF /* libBumpAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E700F914ED3A4E007A51DF /* libBumpAPI.a */; };
 		A3E7011114ED3A4E007A51DF /* BumpApiLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3E700FB14ED3A4E007A51DF /* BumpApiLocalizable.strings */; };
@@ -70,6 +71,7 @@
 		78BF9CCC10D5F91400ED068C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MusicMatch-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MusicMatch-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A314136614ED518100CE1CEA /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		A3E6509814F1146100960EB8 /* music_match.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_match.png; sourceTree = "<group>"; };
 		A3E700F514ED3A4E007A51DF /* BumpAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BumpAPI.h; path = ../BumpAPI.h; sourceTree = "<group>"; };
 		A3E700F614ED3A4E007A51DF /* BumpAPIAssets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = BumpAPIAssets.bundle; path = ../BumpAPIAssets.bundle; sourceTree = "<group>"; };
 		A3E700F714ED3A4E007A51DF /* BumpAPICustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BumpAPICustomUI.h; path = ../BumpAPICustomUI.h; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A3E6509814F1146100960EB8 /* music_match.png */,
 				C1A0C11E11177EF500C3792A /* sound_bump_tap.aif */,
 				7830A3A410D82C27009B43F7 /* sound_quit_game_button.mp3 */,
 				7830A3A510D82C27009B43F7 /* sound_row0.mp3 */,
@@ -337,6 +340,7 @@
 				A3E7010F14ED3A4E007A51DF /* BumpAPIAssets.bundle in Resources */,
 				A3E7011114ED3A4E007A51DF /* BumpApiLocalizable.strings in Resources */,
 				A3E7011214ED3A4E007A51DF /* Localization-ReadMe.txt in Resources */,
+				A3E6509914F1146100960EB8 /* music_match.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
