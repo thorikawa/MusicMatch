@@ -66,26 +66,40 @@
     MPMediaQuery *everything = [[MPMediaQuery alloc] init];
     NSLog(@"Logging items from a generic query...");
     NSArray *itemsFromGenericQuery = [everything items];
+  
+  int count = 0;
     for (MPMediaItem *song in itemsFromGenericQuery) {
         NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
         NSString *artistName = [song valueForProperty: MPMediaItemPropertyArtist];
         NSNumber *playCount = [song valueForProperty:MPMediaItemPropertyPlayCount];
         NSNumber *mediaType = [song valueForProperty:MPMediaItemPropertyMediaType];
         NSString *genre = [song valueForProperty:MPMediaItemPropertyGenre];
-        if (NSNotFound != [genre rangeOfString:@"spoken" options:NSCaseInsensitiveSearch].location) continue;
-        if (!(MPMediaTypeMusic && [mediaType intValue])) continue;
+      if (NSNotFound != [genre rangeOfString:@"spoken" options:NSCaseInsensitiveSearch].location) {
+        // skip spoken audio, such as language text or radio
+        continue;
+      }
+      if (!(MPMediaTypeMusic && [mediaType intValue])) continue;
+      if (artistName == nil) {
+        NSLog(@"artistName is nil. title=%@", songTitle);
+        continue;
+      }
         
-        NSLog (@"%@ - %@ -%@: %d", songTitle, artistName, genre, [playCount intValue]);
-        NSNumber* num = [dict objectForKey:artistName];
-        if (num == nil) num = [NSNumber numberWithInt:0];
-        num = [NSNumber numberWithInt:[num intValue] + 1];
-        if (artistName == nil) {
-            NSLog(@"artistName is nil. title=%@", songTitle);
-            continue;
-        }
-        [dict setObject:num forKey:artistName];
+      NSLog (@"%@ - %@ -%@: %d", songTitle, artistName, genre, [playCount intValue]);
+      NSNumber* num = [dict objectForKey:artistName];
+      if (num == nil) num = [NSNumber numberWithInt:0];
+      num = [NSNumber numberWithInt:[num intValue] + 1];
+      [dict setObject:num forKey:artistName];
+      count++;
     }
-    return dict;
+  
+  NSMutableDictionary *weightDict = [[[NSMutableDictionary alloc] init] autorelease];
+  for (NSString* key in dict) {
+    NSNumber* num = [dict objectForKey:key];
+    float weight = [num floatValue] / (float)count;
+    [weightDict setObject:[NSNumber numberWithFloat:weight] forKey:key];
+  }
+  
+    return weightDict;
 }
 
 -(void) sendMusicInfo{
@@ -129,27 +143,39 @@
     
     //calculate similarity of two
     NSString* mostSimilarArtist;
-    int mostSimilarCount = 0;
-    int totalSimilarCount = 0;
-    int sum1 = 0;
-    int sum2 = 0;
+  float fSimilarity = 0;
+  NSMutableArray* artistWeightArray = [[[NSMutableArray alloc] init] autorelease];  
     for (NSString* key in otherDict) {
-        NSNumber* num1 = [otherDict objectForKey:key];
-        NSNumber* num2 = [myDict objectForKey:key];
-        int count1 = [num1 intValue];
-        int count2 = [num2 intValue];
-        sum1 += count1;
-        sum2 += count2;
-        int similar = MIN(count1, count2);
-        if (similar > mostSimilarCount) {
-            mostSimilarArtist = key;
-            mostSimilarCount = similar;
-        }
-        totalSimilarCount += similar;
+        NSNumber* otherNum = [otherDict objectForKey:key];
+        NSNumber* myNum = [myDict objectForKey:key];
+      if (myNum == nil) continue;
+      
+      float otherWeight = [otherNum floatValue];
+      float myWeight = [myNum floatValue];
+      // this is guaranteed in other library
+      fSimilarity += myWeight;
+      float artistWeight = (otherWeight+myWeight)/2.0;
+      NSMutableDictionary* data = [[NSMutableDictionary alloc] init];
+      [data setObject:[NSNumber numberWithFloat:artistWeight] forKey:@"w"];
+      [data setObject:key forKey:@"a"];
+      [artistWeightArray addObject:data];
     }
-    int similarity = 100 * (float) totalSimilarCount / (float) MIN(sum1, sum2);
-    
-    NSString* message = [NSString stringWithFormat:@"あなた達の相性は%dパーセントです。二人の共通アーティストは%@です。", similarity, mostSimilarArtist];
+  
+  NSArray *sortedArray;
+  sortedArray = [artistWeightArray sortedArrayUsingComparator:^(id a, id b) {
+    NSDate *first = [(NSDictionary*)a objectForKey:@"w"];
+    NSDate *second = [(NSDictionary*)b objectForKey:@"w"];
+    return [first compare:second];
+  }];
+  
+    int similarity = 100 * fSimilarity;
+  int rank = MIN(3, [sortedArray count]);
+    NSString* message = [NSString stringWithFormat:@"あなた達の相性は%dパーセントです。二人の共通アーティストは...", similarity, mostSimilarArtist];
+  for (int i=0; i<rank; i++) {
+    NSDictionary* dic = (NSDictionary*)[sortedArray objectAtIndex:i];
+    NSString* s = [NSString stringWithFormat:@"\n%d位:%@", i+1, [dic objectForKey:@"a"]];
+    message = [NSString stringWithFormat:@"%@%@", message, s];
+  }
     [mainViewController showMessage:message];
 		
 }

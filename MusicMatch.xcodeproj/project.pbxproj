@@ -393,6 +393,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Takahiro Horikawa (HZTY57Z9F5)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -407,6 +408,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = MusicMatchD1;
+				PROVISIONING_PROFILE = "6EDEB6C8-C4AF-4F7F-9DC0-0D7A67C50B1A";
 			};
 			name = Debug;
 		};
