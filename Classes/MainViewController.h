@@ -1,5 +1,5 @@
 //
-//  BumpFourAppDelegate.h
+//  BumpFourViewController.h
 //  BumpFour
 //
 //  Created by Jake on 10/12/09.
@@ -15,16 +15,19 @@
 //  
 
 #import <UIKit/UIKit.h>
+#import "BumpConnector.h"
 
-@class BumpFourViewController;
-
-@interface BumpFourAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    BumpFourViewController *viewController;
+@interface MainViewController : UIViewController <UIAlertViewDelegate> {
+	UIButton *bumpToConnectButton;	
+	UIAlertView *endOfGameAlert;
+	BumpConnector *bumpConn;
 }
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet BumpFourViewController *viewController;
+@property (nonatomic, retain) IBOutlet  UIButton *bumpToConnectButton;
 
+@property (nonatomic, retain) BumpConnector *bumpConn;
+-(void) applicationWillTerminate:(UIApplication *)application;
+-(void) showMessage:(NSString *)message;
+-(IBAction) startBumpButtonPress; 
 @end
 

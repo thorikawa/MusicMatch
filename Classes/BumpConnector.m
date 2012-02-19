@@ -18,16 +18,14 @@
 // All methods found under the tag: #pragma mark BumpDelegate methods
 
 
-#import "GameBumpConnector.h"
-#import "BumpFourViewController.h"
+#import "BumpConnector.h"
+#import "MainViewController.h"
 
 
-@implementation GameBumpConnector
-@synthesize bumpFourGame;
+@implementation BumpConnector
+@synthesize mainViewController;
 - (id) init{
 	if(self = [super init]){
-		myRollNumber = 0;
-		opponentRollNumber = -1;
 		bumpObject = [BumpAPI sharedInstance];
 		bumpsound = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"sound_bump_tap" ofType:@"aif" inDirectory:@"/"]] error:NULL];
 		[bumpsound prepareToPlay];
@@ -38,7 +36,7 @@
 -(void) configBump{
 	[bumpObject configAPIKey:@"f2c072a5cbf24c5cb26b0be2e24da190"];//put your api key here. Get an api key from http://bu.mp
 	[bumpObject configDelegate:self];
-	[bumpObject configParentView:bumpFourGame.view];
+	[bumpObject configParentView:mainViewController.view];
 	[bumpObject configActionMessage:@"Bump with another BumpFour player to start game."];
 }
 
@@ -53,35 +51,6 @@
 
 #pragma mark -
 #pragma mark Private Methods
--(void) determineFirstPlayer{	
-	//if either of the rollNumbers haven't been set yet we can't determine yet
-	NSLog(@"===>attempt to determine first player.");
-	if(myRollNumber == -1 || opponentRollNumber == -1){
-		NSLog(@"===>don't have rolls for both players. numtimes rolled are me:%d other:%d", myRollNumber, opponentRollNumber);	
-		return;
-	}
-	//make sure we are on the same roll as the opponent
-	if(myRollNumber == opponentRollNumber){
-		if(opponentRoll == myRoll){
-			//if it's the same both players will roll again
-			NSLog(@"===>we rolled the same thing, roll again me:%d other:%d", myRoll, opponentRoll);	
-			[self performSelector:@selector(sendMyDieRoll) withObject:nil];
-		} else if(opponentRoll >= myRoll) {
-			NSLog(@"===>Opponent got the high roll, roll again me:%d other:%d", myRoll, opponentRoll);
-			[bumpFourGame setLocalPlayer:BLACK_PLAYER];
-			[bumpFourGame startGame];
-			NSLog(@"Local player is BLACK!!");
-		} else {
-			NSLog(@"===>I got the high roll, roll again me:%d other:%d", myRoll, opponentRoll);
-			[bumpFourGame setLocalPlayer:RED_PLAYER];
-			[bumpFourGame startGame];
-			NSLog(@"Local player is RED!!");
-		}
-	} else {
-		//Wait until we have both players rolls for the same attempt. i.e. do nothing.
-		NSLog(@"===>We're on differen't roll numbers wait for next time. numtimes rolled are me:%d other:%d", myRollNumber, opponentRollNumber);
-	}
-}
 
 // for Debug -- prints contents of NSDictionary
 -(void)printDict:(NSDictionary *)ddict {
@@ -92,25 +61,6 @@
 	}	
 }
 
--(void) sendMyDieRoll{
-	NSMutableDictionary *moveDict = [[NSMutableDictionary alloc] initWithCapacity:5];
-	[moveDict setObject:[[bumpObject me] userName]  forKey:@"USER_ID"];
-	[moveDict setObject:@"DETERMINE_PLAYER_1"  forKey:@"GAME_ACTION"];
-	[moveDict setObject:[NSString stringWithFormat:@"%d", ++myRollNumber]  forKey:@"DICE_ROLL_TRY_NUM"];
-	myRoll = arc4random() % 1000;
-	[moveDict setObject:[NSString stringWithFormat:@"%d", myRoll]  forKey:@"DICE_ROLL_VALUE"];
-	
-	NSData *moveChunk = [NSKeyedArchiver archivedDataWithRootObject:moveDict];
-	//[self printDict:moveDict];
-	[moveDict release];
-	packetsAttempted++;
-	[bumpObject sendData:moveChunk];
-
-	
-	//call this here incase we are late and already have the opponnent roll.
-	[self determineFirstPlayer];
-}
-
 -(NSDictionary*) musicInfoDictionary{
     NSMutableDictionary *dict = [[[NSMutableDictionary alloc] init] autorelease];
     MPMediaQuery *everything = [[MPMediaQuery alloc] init];
@@ -119,7 +69,13 @@
     for (MPMediaItem *song in itemsFromGenericQuery) {
         NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
         NSString *artistName = [song valueForProperty: MPMediaItemPropertyArtist];
-        NSLog (@"%@ - %@", songTitle, artistName);
+        NSNumber *playCount = [song valueForProperty:MPMediaItemPropertyPlayCount];
+        NSNumber *mediaType = [song valueForProperty:MPMediaItemPropertyMediaType];
+        NSString *genre = [song valueForProperty:MPMediaItemPropertyGenre];
+        if (NSNotFound != [genre rangeOfString:@"spoken" options:NSCaseInsensitiveSearch].location) continue;
+        if (!(MPMediaTypeMusic && [mediaType intValue])) continue;
+        
+        NSLog (@"%@ - %@ -%@: %d", songTitle, artistName, genre, [playCount intValue]);
         NSNumber* num = [dict objectForKey:artistName];
         if (num == nil) num = [NSNumber numberWithInt:0];
         num = [NSNumber numberWithInt:[num intValue] + 1];
@@ -141,44 +97,15 @@
 
 #pragma mark -
 #pragma mark Public Methods
-- (void) sendGameMove:(int)column{
-	if(bumpFourGame.turn == bumpFourGame.localPlayer){ //if it is the local players turn send the move.
-		
-		//Create a dictionary describing the move to the other client.
-		//We chose to send a dictionary for our communications for this example,
-		//But you can use any type of data you like, as long as you convert it to an NSData object.
-		NSMutableDictionary *moveDict = [[NSMutableDictionary alloc] initWithCapacity:5];
-		[moveDict setObject:[[bumpObject me] userName]  forKey:@"USER_ID"];
-		//Tell the other client the action we wish to perform is a "MOVE" so it knows what to do with this data.
-		[moveDict setObject:@"MOVE"  forKey:@"GAME_ACTION"];
-		//Tell the other client what column we made a move into.
-		[moveDict setObject:[NSString stringWithFormat:@"%d", column]  forKey:@"MOVED_COLUMN"];
-		
-		//Now we need to package our move dictionary up into an NSData object so we can send it up to Bump.
-		//We'll do that with with an NSKeyedArchiver.
-		NSData *moveChunk = [NSKeyedArchiver archivedDataWithRootObject:moveDict];
-		//[self printDict:moveDict];
-		[moveDict release];
-		
-		//Calling send will have bump send the data up to the other user's mailbox.
-		//The other user will get a bumpDataReceived: callback with an identical NSData* chunk shortly.
-		packetsAttempted++;
-		[bumpObject sendData:moveChunk];
-	}
-}
-
 - (void) startGame {
 	//The first thing we need to do upon succesful connection is to decide which player will go first.
 	//We do this by having both players send a dice roll between 1 and 1000, the player with the higher roll
 	//will becom the first player (red).
 	//If player's rolls are equal, both players will roll again until a player can be determined.
-	myRollNumber = 0;
-	[bumpFourGame setLocalPlayerName:[[bumpObject me] userName]];
-	[bumpFourGame setRemotePlayerName:[[bumpObject otherBumper] userName]];
-	[bumpFourGame updateStatusLineWithText:@"Determining first player..." showSpinner:YES animated:YES];
     NSLog(@"username=%@", [[bumpObject me] userName]);
 	[self sendMusicInfo];
 }
+
 #pragma mark Utility
 -(void) quickAlert:(NSString *)titleText msgText:(NSString *)msgText{
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:titleText message:msgText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -192,16 +119,11 @@
 - (void) bumpDataReceived:(NSData *)chunk{
     NSLog(@"received");
 	//The chunk was packaged by the other user using an NSKeyedArchiver, so we unpackage it here with our NSKeyedUnArchiver
-	NSDictionary *responseDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:chunk];
-	[self printDict:responseDictionary];
+	NSDictionary *otherDict = [NSKeyedUnarchiver unarchiveObjectWithData:chunk];
+	[self printDict:otherDict];
 	
-	//responseDictionary no contains an Identical dictionary to the one that the other user sent us
-	//NSString *userName = [responseDictionary objectForKey:@"USER_ID"];
-	//NSString *gameAction = [responseDictionary objectForKey:@"GAME_ACTION"];
+	//otherDict no contains an Identical dictionary to the one that the other user sent us
 	
-	//NSLog(@"user name and action are %@, %@", userName, gameAction);
-	
-	//if([gameAction isEqualToString:@"DETERMINE_PLAYER_1"]){
     NSDictionary* myDict = [self musicInfoDictionary];
     [self printDict:myDict];
     
@@ -211,8 +133,8 @@
     int totalSimilarCount = 0;
     int sum1 = 0;
     int sum2 = 0;
-    for (NSString* key in responseDictionary) {
-        NSNumber* num1 = [responseDictionary objectForKey:key];
+    for (NSString* key in otherDict) {
+        NSNumber* num1 = [otherDict objectForKey:key];
         NSNumber* num2 = [myDict objectForKey:key];
         int count1 = [num1 intValue];
         int count2 = [num2 intValue];
@@ -221,15 +143,14 @@
         int similar = MIN(count1, count2);
         if (similar > mostSimilarCount) {
             mostSimilarArtist = key;
+            mostSimilarCount = similar;
         }
         totalSimilarCount += similar;
     }
-    float similarity = (float) totalSimilarCount / (float) MIN(sum1, sum2);
+    int similarity = 100 * (float) totalSimilarCount / (float) MIN(sum1, sum2);
     
-    NSString* message = [NSString stringWithFormat:@"あなた達の相性は%fパーセントです。二人の共通アーティストは%@です。", similarity, mostSimilarArtist];
-    [bumpFourGame showMessage:message];
-    
-	//}
+    NSString* message = [NSString stringWithFormat:@"あなた達の相性は%dパーセントです。二人の共通アーティストは%@です。", similarity, mostSimilarArtist];
+    [mainViewController showMessage:message];
 		
 }
 
@@ -262,7 +183,6 @@
 	if(reason != END_USER_QUIT){ 
 		//if the local user initiated the quit,restarting the app is already being handled
 		//other wise we'll restart here
-		[bumpFourGame restartProgram];
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Disconnected" message:alertText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[alert show];
 		[alert release];
@@ -286,7 +206,6 @@
 			break;
 	}
 	
-	[bumpFourGame restartProgram];
 	if(reason != FAIL_USER_CANCELED){
 		//if the user canceled they know it and they don't need a popup.
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed" message:alertText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

@@ -20,25 +20,17 @@
 #import "BumpAPI.h"
 #import "Bumper.h"
 
-@class BumpFourViewController;
+@class MainViewController;
 
-@interface GameBumpConnector : NSObject <BumpAPIDelegate> {
-	BumpFourViewController *bumpFourGame;
+@interface BumpConnector : NSObject <BumpAPIDelegate> {
+	MainViewController *mainViewController;
 	BumpAPI *bumpObject;
 	AVAudioPlayer *bumpsound;
-	//dice rolls to determine player 1
-	int myRollNumber;
-	int opponentRollNumber;
-	int myRoll;
-	int opponentRoll;
-	
-	int packetsAttempted;
 }
 
-@property (nonatomic, assign) BumpFourViewController *bumpFourGame;
+@property (nonatomic, assign) MainViewController *mainViewController;
 
 - (void) startGame;
-- (void) sendGameMove:(int)column;
 - (void) startBump;
 - (void) stopBump;
 @end

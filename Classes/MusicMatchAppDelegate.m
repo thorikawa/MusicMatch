@@ -14,10 +14,10 @@
 //  and it is provided "as is" without express or implied warranty.
 //  
 
-#import "BumpFourAppDelegate.h"
-#import "BumpFourViewController.h"
+#import "MusicMatchAppDelegate.h"
+#import "MainViewController.h"
 
-@implementation BumpFourAppDelegate
+@implementation MusicMatchAppDelegate
 
 @synthesize window;
 @synthesize viewController;
