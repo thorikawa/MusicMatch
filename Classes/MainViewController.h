@@ -21,13 +21,15 @@
 	UIButton *bumpToConnectButton;	
 	UIAlertView *endOfGameAlert;
 	BumpConnector *bumpConn;
+    NSArray* mFavArray;
 }
 
 @property (nonatomic, retain) IBOutlet  UIButton *bumpToConnectButton;
-
 @property (nonatomic, retain) BumpConnector *bumpConn;
+
 -(void) applicationWillTerminate:(UIApplication *)application;
--(void) showMessage:(NSString *)message;
+-(void) showMessage:(NSString *)message favoriteArray:(NSArray*)favArray;
 -(IBAction) startBumpButtonPress; 
+
 @end
 

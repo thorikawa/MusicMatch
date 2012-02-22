@@ -67,6 +67,8 @@
     NSLog(@"Logging items from a generic query...");
     NSArray *itemsFromGenericQuery = [everything items];
   
+    NSMutableArray *playCountArray = [[[NSMutableArray alloc] init] autorelease];
+    
   int count = 0;
     for (MPMediaItem *song in itemsFromGenericQuery) {
         NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
@@ -90,6 +92,12 @@
       num = [NSNumber numberWithInt:[num intValue] + 1];
       [dict setObject:num forKey:artistName];
       count++;
+        
+        NSMutableDictionary *fdic = [[[NSMutableDictionary alloc] init] autorelease];
+        [fdic setObject:playCount forKey:@"count"];
+        [fdic setObject:artistName forKey:@"artistName"];
+        [fdic setObject:songTitle forKey:@"songTitle"];
+        [playCountArray addObject:fdic];
     }
   
   NSMutableDictionary *weightDict = [[[NSMutableDictionary alloc] init] autorelease];
@@ -98,7 +106,19 @@
     float weight = [num floatValue] / (float)count;
     [weightDict setObject:[NSNumber numberWithFloat:weight] forKey:key];
   }
-  
+
+    NSArray *sortedArray;
+    sortedArray = [playCountArray sortedArrayUsingComparator:^(id a, id b) {
+        NSDate *first = [(NSDictionary*)a objectForKey:@"count"];
+        NSDate *second = [(NSDictionary*)b objectForKey:@"count"];
+        return [second compare:first];
+    }];
+    for (int i=0; i<MIN(3, [sortedArray count]); i++) {
+        NSDictionary* fav = [sortedArray objectAtIndex:i];
+        NSString* favkey = [NSString stringWithFormat:@"___fav___%d", i];
+        [weightDict setObject:fav forKey:favkey];
+    }
+
     return weightDict;
 }
 
@@ -144,8 +164,15 @@
     //calculate similarity of two
     NSString* mostSimilarArtist;
   float fSimilarity = 0;
-  NSMutableArray* artistWeightArray = [[[NSMutableArray alloc] init] autorelease];  
+  NSMutableArray* artistWeightArray = [[[NSMutableArray alloc] init] autorelease];
+  NSMutableArray* favArray = [[[NSMutableArray alloc] init] autorelease];
     for (NSString* key in otherDict) {
+        if (NSNotFound != [key rangeOfString:@"___fav___" options:NSCaseInsensitiveSearch].location) {
+            // this is special key
+            [favArray addObject:[otherDict objectForKey:key]];
+            continue;
+        }
+
         NSNumber* otherNum = [otherDict objectForKey:key];
         NSNumber* myNum = [myDict objectForKey:key];
       if (myNum == nil) continue;
@@ -165,7 +192,7 @@
   sortedArray = [artistWeightArray sortedArrayUsingComparator:^(id a, id b) {
     NSDate *first = [(NSDictionary*)a objectForKey:@"w"];
     NSDate *second = [(NSDictionary*)b objectForKey:@"w"];
-    return [first compare:second];
+    return [second compare:first];
   }];
   
     int similarity = 100 * fSimilarity;
@@ -176,7 +203,7 @@
     NSString* s = [NSString stringWithFormat:@"\n%d位:%@", i+1, [dic objectForKey:@"a"]];
     message = [NSString stringWithFormat:@"%@%@", message, s];
   }
-    [mainViewController showMessage:message];
+    [mainViewController showMessage:message favoriteArray:favArray];
 		
 }
 
